@@ -1,2 +1,81 @@
-package com.alemcar.service;public class CourseService {
+package com.alemcar.service;
+
+import com.alemcar.dto.CourseDTO;
+import com.alemcar.dto.CoursePageDTO;
+import com.alemcar.dto.CourseRequestDTO;
+import com.alemcar.dto.mapper.CourseMapper;
+import com.alemcar.enums.Status;
+import com.alemcar.exception.BusinessException;
+import com.alemcar.exception.RecordNotFoundException;
+import com.alemcar.models.Course;
+import com.alemcar.repository.CourseRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Validated
+public class CourseService {
+
+    private final CourseRepository courseRepository;
+    private final CourseMapper courseMapper;
+
+    public CourseService(CourseRepository courseRepository, CourseMapper courseMapper){
+        this.courseRepository = courseRepository;
+        this.courseMapper = courseMapper;
+    }
+
+    public CoursePageDTO findAll(@PositiveOrZero int page, @Positive @Max(1000) int pageSize) {
+        Page<Course> coursePage = courseRepository.findAll(PageRequest.of(page, pageSize));
+        List<CourseDTO> list = coursePage.getContent().stream()
+                .map(courseMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return new CoursePageDTO(list, coursePage.getTotalElements(), coursePage.getTotalPages());
+    }
+
+    public List<CourseDTO> findByName(@NotNull @NotBlank String name) {
+        return courseRepository.findByName(name).stream()
+                .map(courseMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public CourseDTO findById(@Positive @NotNull Long id) {
+        return courseRepository.findById(id)
+                .map(courseMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
+    }
+
+    public CourseDTO create(@Valid CourseRequestDTO courseRequestDTO) {
+        courseRepository.findByName(courseRequestDTO.name()).stream()
+                .filter(c -> c.getStatus().equals(Status.ACTIVE))
+                .findAny().ifPresent(c -> {
+                    throw new BusinessException("Um curso com nome " + courseRequestDTO.name() + " já existe.");
+                });
+        Course course = courseMapper.toModel(courseRequestDTO);
+        course.setStatus(Status.ACTIVE);
+
+        return courseMapper.toDTO(courseRepository.save(course));
+    }
+
+    public CourseDTO update(@Positive @NotNull Long id, @Valid CourseRequestDTO courseRequestDTO) {
+        return courseRepository.findById(id).map(actual -> {
+            actual.setName(courseRequestDTO.name());
+            actual.setCategory(courseMapper.convertCategoryValue(courseRequestDTO.category()));
+
+            return courseMapper.toDTO(courseRepository.save(actual));
+        }).orElseThrow(() -> new RecordNotFoundException(id));
+    }
+
+    public void delete(@Positive @NotNull Long id) {
+        courseRepository.delete(courseRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(id))
+        );
+    }
 }
