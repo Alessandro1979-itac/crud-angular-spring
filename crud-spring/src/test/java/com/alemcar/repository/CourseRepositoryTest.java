@@ -18,7 +18,6 @@ import com.alemcar.enums.Category;
 import com.alemcar.enums.Status;
 import com.alemcar.model.Course;
 import com.alemcar.model.Lesson;
-import com.alemcar.repository.CourseRepository;
 import com.alemcar.service.CourseService;
 
 /**
