@@ -8,6 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Used as response object that represents a Course
  */
 public record CourseDTO(
-        @JsonProperty("_id") Long id,
-        String name, String category, List<LessonDTO> lessons) {
+    @JsonProperty("_id") Long id,
+    String name, String category, List<LessonDTO> lessons) {
 }

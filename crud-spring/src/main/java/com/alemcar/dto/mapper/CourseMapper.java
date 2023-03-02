@@ -1,16 +1,17 @@
 package com.alemcar.dto.mapper;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
 import com.alemcar.dto.CourseDTO;
 import com.alemcar.dto.CourseRequestDTO;
 import com.alemcar.dto.LessonDTO;
 import com.alemcar.enums.Category;
-import com.alemcar.models.Course;
-import com.alemcar.models.Lesson;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.alemcar.model.Course;
+import com.alemcar.model.Lesson;
 
 /**
  * Class to map the Course entity to the CourseRequestDTO and vice-versa.
@@ -34,7 +35,6 @@ public class CourseMapper {
                     lesson.setName(lessonDTO.name());
                     lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
                     lesson.setCourse(course);
-
                     return lesson;
                 }).collect(Collectors.toSet());
         course.setLessons(lessons);
@@ -46,25 +46,22 @@ public class CourseMapper {
         if (course == null) {
             return null;
         }
-
         List<LessonDTO> lessonDTOList = course.getLessons()
                 .stream()
                 .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getYoutubeUrl()))
                 .collect(Collectors.toList());
-
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), lessonDTOList);
+        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(),
+                lessonDTOList);
     }
 
     public Category convertCategoryValue(String value) {
         if (value == null) {
             return null;
         }
-
         return switch (value) {
             case "Front-end" -> Category.FRONT_END;
             case "Back-end" -> Category.BACK_END;
-
-            default -> throw new IllegalArgumentException("Categoria inválida.");
+            default -> throw new IllegalArgumentException("Invalid Category.");
         };
     }
 }
