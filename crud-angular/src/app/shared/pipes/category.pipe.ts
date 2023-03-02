@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   standalone: true,
-  name: 'category',
+  name: 'category'
 })
 export class CategoryPipe implements PipeTransform {
   transform(value: string): string {
@@ -12,7 +12,6 @@ export class CategoryPipe implements PipeTransform {
       case 'back-end':
         return 'computer';
     }
-
     return 'code';
   }
 }

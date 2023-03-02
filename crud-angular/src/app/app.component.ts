@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
       <h1 [routerLink]="['/']" style="cursor: pointer;">CRUD Angular</h1>
     </mat-toolbar>
     <router-outlet></router-outlet>
-  `,
+  `
 })
-export class AppComponent {}
+export class AppComponent { }

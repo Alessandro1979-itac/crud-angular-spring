@@ -5,15 +5,16 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'courses' },
   {
     path: 'courses',
-    loadChildren: () =>
-      import('./courses/courses.module').then((m) => m.CoursesModule),
-  },
+    loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule)
+  }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules
+    })
   ],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

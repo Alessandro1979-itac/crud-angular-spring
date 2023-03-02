@@ -17,17 +17,17 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
   exports: [
     MatToolbarModule,
     MatCardModule,
-    MatTableModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatInputModule,
-    MatIconModule,
     MatListModule,
     MatProgressSpinnerModule,
+    MatInputModule,
     MatSelectModule,
-    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDialogModule,
     MatSnackBarModule,
-    YouTubePlayerModule,
-  ],
+    MatSidenavModule,
+    YouTubePlayerModule
+  ]
 })
-export class AppMaterialModule {}
+export class AppMaterialModule { }

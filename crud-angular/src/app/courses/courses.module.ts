@@ -6,7 +6,7 @@ import { AppMaterialModule } from '../shared/app-material/app-material.module';
 import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../shared/components/error-dialog/error-dialog.component';
 import { CategoryPipe } from '../shared/pipes/category.pipe';
-import CoursesListComponent from './components/courses-list/courses-list.component';
+import { CoursesListComponent } from './components/courses-list/courses-list.component';
 import { CourseFormComponent } from './containers/course-form/course-form.component';
 import { CoursesComponent } from './containers/courses/courses.component';
 import { CoursesRoutingModule } from './courses-routing.module';
@@ -20,7 +20,7 @@ import { CoursesRoutingModule } from './courses-routing.module';
     ReactiveFormsModule,
     CategoryPipe,
     ErrorDialogComponent,
-    ConfirmationDialogComponent,
-  ],
+    ConfirmationDialogComponent
+  ]
 })
-export class CoursesModule {}
+export class CoursesModule { }

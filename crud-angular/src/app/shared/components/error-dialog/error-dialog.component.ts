@@ -13,8 +13,8 @@ import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
     <div mat-dialog-actions align="center">
       <button mat-stroked-button mat-dialog-close>Close</button>
     </div>
-  `,
+  `
 })
 export class ErrorDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: string) { }
 }

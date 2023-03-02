@@ -2,50 +2,48 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, map, of, tap } from 'rxjs';
 
-import { Course } from '../models/course';
-import { CoursePage } from '../models/course-page';
+import { Course } from '../model/course';
+import { CoursePage } from '../model/course-page';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CoursesService {
   private readonly API = '/api/courses';
+
   private cache: Course[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   list() {
     return this.http.get<CoursePage>(this.API).pipe(
       first(),
-      map((data) => data.courses),
-      tap((data) => (this.cache = data))
+      map(data => data.courses),
+      tap(data => (this.cache = data))
     );
   }
 
   loadById(id: string) {
     if (this.cache.length > 0) {
-      const record = this.cache.find((course) => `${course._id}` === `${id}`);
-
+      const record = this.cache.find(course => `${course._id}` === `${id}`);
       return record != null ? of(record) : this.getById(id);
     }
-
     return this.getById(id);
   }
 
-  getById(id: string) {
+  private getById(id: string) {
     return this.http.get<Course>(`${this.API}/${id}`).pipe(first());
   }
 
   save(record: Partial<Course>) {
-    if (record._id) return this.update(record);
-
+    if (record._id) {
+      return this.update(record);
+    }
     return this.create(record);
   }
 
   private update(record: Partial<Course>) {
-    return this.http
-      .put<Course>(`${this.API}/${record._id}`, record)
-      .pipe(first());
+    return this.http.put<Course>(`${this.API}/${record._id}`, record).pipe(first());
   }
 
   private create(record: Partial<Course>) {
