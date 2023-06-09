@@ -1,8 +1,5 @@
 package com.alemcar;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 import com.alemcar.enums.Category;
-import com.alemcar.enums.Status;
 import com.alemcar.model.Course;
 import com.alemcar.model.Lesson;
 import com.alemcar.repository.CourseRepository;
@@ -25,27 +21,26 @@ public class CrudSpringApplication {
 	@Bean
 	@Profile("dev")
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
-		return args -> extracted(courseRepository);
-	}
+		return args -> {
+			courseRepository.deleteAll();
 
-	private void extracted(CourseRepository courseRepository) {
-		courseRepository.deleteAll();
-		for (int i = 1; i < 20; i++) {
 			Course c = new Course();
-			c.setName("Course " + i);
-			c.setCategory(Category.FRONT_END);
-			c.setStatus(Status.ACTIVE);
+			c.setName("Angular com Spring");
+			c.setCategory(Category.BACK_END);
 
-			Set<Lesson> lessons = new HashSet<>();
-			Lesson lesson = new Lesson();
-			lesson.setName("Lesson " + i);
-			lesson.setYoutubeUrl("abcdefgh123");
-			lesson.setCourse(c);
-			lessons.add(lesson);
-			c.setLessons(lessons);
+			Lesson l = new Lesson();
+			l.setName("Introdução");
+			l.setYoutubeUrl("watch?v=1");
+			l.setCourse(c);
+			c.getLessons().add(l);
+
+			Lesson l1 = new Lesson();
+			l1.setName("Angular");
+			l1.setYoutubeUrl("watch?v=2");
+			l1.setCourse(c);
+			c.getLessons().add(l1);
 
 			courseRepository.save(c);
-		}
+		};
 	}
-
 }

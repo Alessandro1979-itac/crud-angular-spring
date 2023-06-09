@@ -1,57 +1,44 @@
 package com.alemcar.dto.mapper;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
 import com.alemcar.dto.CourseDTO;
-import com.alemcar.dto.CourseRequestDTO;
 import com.alemcar.dto.LessonDTO;
 import com.alemcar.enums.Category;
 import com.alemcar.model.Course;
-import com.alemcar.model.Lesson;
 
-/**
- * Class to map the Course entity to the CourseRequestDTO and vice-versa.
- * ModelMapper currently does not support record types.
- */
 @Component
 public class CourseMapper {
-
-    public Course toModel(CourseRequestDTO courseRequestDTO) {
-
-        Course course = new Course();
-        course.setName(courseRequestDTO.name());
-        course.setCategory(convertCategoryValue(courseRequestDTO.category()));
-
-        Set<Lesson> lessons = courseRequestDTO.lessons().stream()
-                .map(lessonDTO -> {
-                    Lesson lesson = new Lesson();
-                    if (lesson.getId() > 0) {
-                        lesson.setId(lessonDTO._id());
-                    }
-                    lesson.setName(lessonDTO.name());
-                    lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
-                    lesson.setCourse(course);
-                    return lesson;
-                }).collect(Collectors.toSet());
-        course.setLessons(lessons);
-
-        return course;
-    }
 
     public CourseDTO toDTO(Course course) {
         if (course == null) {
             return null;
         }
-        List<LessonDTO> lessonDTOList = course.getLessons()
+        List<LessonDTO> lessons = course.getLessons()
                 .stream()
-                .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getYoutubeUrl()))
+                .map(lesson -> new LessonDTO((long) lesson.getId(), lesson.getName(),
+                        lesson.getYoutubeUrl()))
                 .collect(Collectors.toList());
         return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(),
-                lessonDTOList);
+                lessons);
+    }
+
+    public Course toEntity(CourseDTO courseDTO) {
+
+        if (courseDTO == null) {
+            return null;
+        }
+
+        Course course = new Course();
+        if (courseDTO.id() != null) {
+            course.setId(courseDTO.id());
+        }
+        course.setName(courseDTO.name());
+        course.setCategory(convertCategoryValue(courseDTO.category()));
+        return course;
     }
 
     public Category convertCategoryValue(String value) {
@@ -61,7 +48,7 @@ public class CourseMapper {
         return switch (value) {
             case "Front-end" -> Category.FRONT_END;
             case "Back-end" -> Category.BACK_END;
-            default -> throw new IllegalArgumentException("Invalid Category.");
+            default -> throw new IllegalArgumentException("Categoria inválida: " + value);
         };
     }
 }

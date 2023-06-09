@@ -1,7 +1,7 @@
 package com.alemcar.enums;
 
 public enum Status {
-    ACTIVE("Active"), INACTIVE("Inactive");
+    ACTIVE("Ativo"), INACTIVE("Inativo");
 
     private String value;
 

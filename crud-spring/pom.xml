@@ -13,9 +13,9 @@
 	<artifactId>crud-spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>crud-spring</name>
-	<description>REST API</description>
+	<description>Projeto exemplo CRUD Spring + Angular</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 
@@ -43,7 +43,6 @@
 			<version>2.0.0</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -59,6 +58,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
