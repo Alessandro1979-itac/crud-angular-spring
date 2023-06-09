@@ -1,20 +1,17 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
+  FormGroup,
   NonNullableFormBuilder,
   UntypedFormArray,
-  Validators,
-  FormGroup
+  Validators
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
 import { Course } from '../../model/course';
 import { Lesson } from '../../model/lesson';
 import { CoursesService } from '../../services/courses.service';
-import { ErrorDialogComponent } from './../../../shared/components/error-dialog/error-dialog.component';
-import { FormUtilsService } from './../../../shared/services/form-utils.service';
 
 @Component({
   selector: 'app-course-form',
@@ -28,11 +25,9 @@ export class CourseFormComponent implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private service: CoursesService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog,
     private location: Location,
-    private route: ActivatedRoute,
-    public formUtils: FormUtilsService
-  ) { }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     const course: Course = this.route.snapshot.data['course'];
@@ -48,7 +43,6 @@ export class CourseFormComponent implements OnInit {
   }
 
   private retrieveLessons(course: Course) {
-    console.log(course);
     const lessons = [];
     if (course?.lessons) {
       course.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)));
@@ -58,17 +52,11 @@ export class CourseFormComponent implements OnInit {
     return lessons;
   }
 
-  private createLesson(lesson: Lesson = { _id: '', name: '', youtubeUrl: '' }) {
+  private createLesson(lesson: Lesson = { id: '', name: '', youtubeUrl: '' }) {
     return this.formBuilder.group({
-      _id: [lesson._id],
-      name: [
-        lesson.name,
-        [Validators.required, Validators.minLength(5), Validators.maxLength(100)]
-      ],
-      youtubeUrl: [
-        lesson.youtubeUrl,
-        [Validators.required, Validators.minLength(10), Validators.maxLength(11)]
-      ]
+      id: [lesson.id],
+      name: [lesson.name],
+      youtubeUrl: [lesson.youtubeUrl]
     });
   }
 
@@ -76,38 +64,11 @@ export class CourseFormComponent implements OnInit {
     return (<UntypedFormArray>this.form.get('lessons')).controls;
   }
 
-  getErrorMessage(fieldName: string): string {
-    return this.formUtils.getFieldErrorMessage(this.form, fieldName);
-  }
-
-  getLessonErrorMessage(fieldName: string, index: number) {
-    return this.formUtils.getFieldFormArrayErrorMessage(
-      this.form,
-      'lessons',
-      fieldName,
-      index
-    );
-  }
-
-  addLesson(): void {
-    const lessons = this.form.get('lessons') as UntypedFormArray;
-    lessons.push(this.createLesson());
-  }
-
-  removeLesson(index: number) {
-    const lessons = this.form.get('lessons') as UntypedFormArray;
-    lessons.removeAt(index);
-  }
-
   onSubmit() {
-    if (this.form.valid) {
-      this.service.save(this.form.value as Course).subscribe({
-        next: () => this.onSuccess(),
-        error: () => this.onError()
-      });
-    } else {
-      this.formUtils.validateAllFormFields(this.form);
-    }
+    this.service.save(this.form.value).subscribe({
+      next: () => this.onSuccess(),
+      error: () => this.onError()
+    });
   }
 
   onCancel() {
@@ -115,13 +76,35 @@ export class CourseFormComponent implements OnInit {
   }
 
   private onSuccess() {
-    this.snackBar.open('Course saved successfully!', '', { duration: 5000 });
+    this.snackBar.open('Curso salvo com sucesso!', '', { duration: 5000 });
     this.onCancel();
   }
 
   private onError() {
-    this.dialog.open(ErrorDialogComponent, {
-      data: 'Error saving course.'
-    });
+    this.snackBar.open('Erro ao salvar curso.', '', { duration: 5000 });
+  }
+
+  getErrorMessage(fieldName: string) {
+    const field = this.form.get(fieldName);
+
+    if (field?.hasError('required')) return 'Campo obrigatório!';
+
+    if (field?.hasError('minlength')) {
+      const requiredLength: number = field.errors
+        ? field.errors['minlength']['requiredLength']
+        : 5;
+
+      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
+    }
+
+    if (field?.hasError('maxlength')) {
+      const requiredLength: number = field.errors
+        ? field.errors['maxlength']['requiredLength']
+        : 200;
+
+      return `Tamanho máximo excedido de ${requiredLength} caracteres.`;
+    }
+
+    return 'Campo Inválido!';
   }
 }

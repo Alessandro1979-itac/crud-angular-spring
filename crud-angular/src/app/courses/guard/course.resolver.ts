@@ -9,7 +9,7 @@ import { CoursesService } from '../services/courses.service';
   providedIn: 'root'
 })
 export class CourseResolver implements Resolve<Course> {
-  constructor(private service: CoursesService) { }
+  constructor(private service: CoursesService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Course> {
     if (route.params && route.params['id']) {

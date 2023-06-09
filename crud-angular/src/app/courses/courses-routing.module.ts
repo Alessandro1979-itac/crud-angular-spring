@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CourseFormComponent } from './containers/course-form/course-form.component';
 import { CoursesComponent } from './containers/courses/courses.component';
-import { CourseResolver } from './resolver/course.resolver';
+import { CourseResolver } from './guard/course.resolver';
 
 const routes: Routes = [
   { path: '', component: CoursesComponent },
@@ -19,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CoursesRoutingModule { }
+export class CoursesRoutingModule {}

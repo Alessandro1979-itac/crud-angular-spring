@@ -9,16 +9,11 @@ import { Course } from '../../model/course';
 })
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
-  @Output() details: EventEmitter<Course> = new EventEmitter(false);
-  @Output() edit: EventEmitter<Course> = new EventEmitter(false);
-  @Output() remove: EventEmitter<Course> = new EventEmitter(false);
-  @Output() add: EventEmitter<boolean> = new EventEmitter(false);
+  @Output() add = new EventEmitter(false);
+  @Output() edit = new EventEmitter(false);
+  @Output() remove = new EventEmitter(false);
 
   readonly displayedColumns = ['name', 'category', 'actions'];
-
-  onDetails(record: Course) {
-    this.details.emit(record);
-  }
 
   onAdd() {
     this.add.emit(true);
@@ -28,7 +23,7 @@ export class CoursesListComponent {
     this.edit.emit(record);
   }
 
-  onRemove(record: Course) {
+  onDelete(record: Course) {
     this.remove.emit(record);
   }
 }
