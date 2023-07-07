@@ -18,7 +18,7 @@ public class Lesson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @Column(length = 100, nullable = false)
     private String name;
