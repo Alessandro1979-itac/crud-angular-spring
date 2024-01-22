@@ -11,11 +11,11 @@ import jakarta.persistence.Converter;
 public class CategoryConverter implements AttributeConverter<Category, String> {
 
     @Override
-    public String convertToDatabaseColumn(Category status) {
-        if (status == null) {
+    public String convertToDatabaseColumn(Category category) {
+        if (category == null) {
             return null;
         }
-        return status.getValue();
+        return category.getValue();
     }
 
     @Override
@@ -28,5 +28,4 @@ public class CategoryConverter implements AttributeConverter<Category, String> {
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
-
 }

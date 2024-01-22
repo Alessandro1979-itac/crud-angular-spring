@@ -21,8 +21,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
-@Service
 @Validated
+@Service
 public class CourseService {
 
     private final CourseRepository courseRepository;
@@ -36,7 +36,6 @@ public class CourseService {
     public CoursePageDTO list(@PositiveOrZero int page, @Positive @Max(100) int pageSize) {
         Page<Course> pageCourse = courseRepository.findAll(PageRequest.of(page, pageSize));
         List<CourseDTO> courses = pageCourse.get().map(courseMapper::toDTO).collect(Collectors.toList());
-        
         return new CoursePageDTO(courses, pageCourse.getTotalElements(), pageCourse.getTotalPages());
     }
 
@@ -57,7 +56,6 @@ public class CourseService {
                     recordFound.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
                     recordFound.getLessons().clear();
                     course.getLessons().forEach(recordFound.getLessons()::add);
-
                     return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }

@@ -15,6 +15,6 @@ public enum Status {
 
     @Override
     public String toString() {
-        return value; // required for @ValueOfEnum
+        return value;
     }
 }

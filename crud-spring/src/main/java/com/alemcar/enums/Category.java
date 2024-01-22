@@ -1,7 +1,7 @@
 package com.alemcar.enums;
 
 public enum Category {
-    FRONT_END("Front-end"), BACK_END("Back-end");
+    BACK_END("Back-end"), FRONT_END("Front-end");
 
     private String value;
 
@@ -15,7 +15,6 @@ public enum Category {
 
     @Override
     public String toString() {
-        return value; // required for @ValueOfEnum
+        return value;
     }
-
 }
