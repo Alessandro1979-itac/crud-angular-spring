@@ -43,23 +43,23 @@ describe('CourseFormComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      declarations: [CourseFormComponent],
-      imports: [
+    imports: [
         MatDialogModule,
         ReactiveFormsModule,
         AppMaterialModule,
         RouterTestingModule.withRoutes([]),
-        NoopAnimationsModule
-      ],
-      providers: [
+        NoopAnimationsModule,
+        CourseFormComponent
+    ],
+    providers: [
         { provide: CoursesService, useValue: courseServiceSpy },
         { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: Location, useValue: locationSpy },
         { provide: MatDialog, useValue: matDialogSpy }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
+}).compileComponents();
 
     fixture = TestBed.createComponent(CourseFormComponent);
     component = fixture.componentInstance;
