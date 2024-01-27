@@ -1,9 +1,12 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AsyncPipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -12,19 +15,14 @@ import { ErrorDialogComponent } from '../../../shared/components/error-dialog/er
 import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
 import { CoursePage } from '../../model/course-page';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { CoursesListComponent } from '../../components/courses-list/courses-list.component';
-import { NgIf, AsyncPipe } from '@angular/common';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatCard } from '@angular/material/card';
 
 @Component({
     selector: 'app-courses',
     templateUrl: './courses.component.html',
     styleUrls: ['./courses.component.scss'],
     standalone: true,
-    imports: [MatCard, MatToolbar, NgIf, CoursesListComponent, MatPaginator, MatProgressSpinner, AsyncPipe]
+    imports: [MatCardModule, MatToolbarModule, CoursesListComponent, MatPaginatorModule, MatProgressSpinnerModule, AsyncPipe]
 })
 export class CoursesComponent implements OnInit {
   courses$: Observable<CoursePage> | null = null;

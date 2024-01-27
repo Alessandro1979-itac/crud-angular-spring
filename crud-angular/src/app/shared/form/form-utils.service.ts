@@ -5,8 +5,6 @@ import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from '@angular
   providedIn: 'root'
 })
 export class FormUtilsService {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {}
 
   validateAllFormFields(formGroup: UntypedFormGroup | UntypedFormArray) {
     Object.keys(formGroup.controls).forEach(field => {
@@ -37,15 +35,15 @@ export class FormUtilsService {
 
     if (field?.hasError('minlength')) {
       const requiredLength: number = field.errors
-        ? field.errors['minlength']['requiredLength']
-        : 5;
+      ? field.errors['minlength']['requiredLength']
+      : 5;
 
       return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
     }
 
     if (field?.hasError('maxlength')) {
       const requiredLength: number = field.errors
-        ? field.errors['maxlength']['maxlength']
+        ? field.errors['maxlength']['requiredLength']
         : 200;
 
       return `Tamanho máximo excedido de ${requiredLength} caracteres.`;
