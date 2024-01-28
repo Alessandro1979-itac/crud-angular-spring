@@ -1,26 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 
 import { Course } from '../model/course';
 import { CoursePage } from '../model/course-page';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
   private readonly API = 'api/courses';
+  private cache: Course[] = [];
 
   constructor(private http: HttpClient) {}
 
   list(page = 0, pageSize = 10) {
-    return this.http
-      .get<CoursePage>(this.API, { params: { page, pageSize } })
-      .pipe(first());
+    return this.http.get<CoursePage>(this.API, { params: { page, pageSize } }).pipe(
+      first(),
+      tap(data => (this.cache = data.courses))
+    );
   }
 
   loadById(id: string) {
-    return this.http.get<Course>(`${this.API}/${id}`);
+    if (this.cache.length > 0) {
+      const record = this.cache.find(course => `${course._id}` === `${id}`);
+      return record != null ? of(record) : this.getById(id);
+    }
+    return this.getById(id);
+  }
+
+  private getById(id: string) {
+    return this.http.get<Course>(`${this.API}/${id}`).pipe(first());
   }
 
   save(record: Partial<Course>) {
