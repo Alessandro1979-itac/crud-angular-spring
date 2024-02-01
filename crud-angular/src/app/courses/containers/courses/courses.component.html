@@ -2,7 +2,7 @@
   <mat-toolbar color="primary">Cursos Disponíveis</mat-toolbar>
 
   @if (courses$ | async; as coursePage) {
-    <div class="mat-elevation-z8">
+    <div class="example-container mat-elevation-z8">
       <app-courses-list
         [courses]="coursePage.courses"
         (add)="onAdd()"
