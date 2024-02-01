@@ -10,7 +10,7 @@ describe('CoursesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CoursesListComponent],
+      imports: [CoursesListComponent],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 

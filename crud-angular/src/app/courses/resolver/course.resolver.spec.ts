@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { Course } from '../model/course';
-import { CoursesService } from '../services/courses.service';
 import { CourseResolver } from './course.resolver';
+import { CoursesService } from '../services/courses.service';
+import { Course } from '../model/course';
 
 describe('CourseResolver', () => {
   let resolver: CourseResolver;

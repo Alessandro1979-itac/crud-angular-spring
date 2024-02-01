@@ -1,9 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController
 } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { CoursesService } from './courses.service';
 import { coursesMock, coursesPageMock } from './courses.mock';
@@ -12,6 +12,7 @@ describe('CoursesService', () => {
   let service: CoursesService;
   let httpTestingController: HttpTestingController;
   const API = '/api/courses';
+  const API_PAGE = `${API}?page=0&pageSize=10`;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,12 +28,12 @@ describe('CoursesService', () => {
   });
 
   it('should list all courses', () => {
-    service.list().subscribe(courses => {
-      expect(courses).toBeTruthy();
-      expect(courses.length).toBe(coursesMock.length);
+    service.list().subscribe(coursePage => {
+      expect(coursePage).toBeTruthy();
+      expect(coursePage.courses.length).toBe(coursesMock.length);
     });
 
-    const req = httpTestingController.expectOne(API);
+    const req = httpTestingController.expectOne(API_PAGE);
     expect(req.request.method).toEqual('GET');
     req.flush(coursesPageMock);
   });
@@ -40,7 +41,7 @@ describe('CoursesService', () => {
   it('should list course by id', () => {
     service.loadById('1').subscribe(course => {
       expect(course).toBeTruthy();
-      expect(course._id).toBe('1');
+      expect(course!._id).toBe('1');
     });
 
     const req = httpTestingController.expectOne(`${API}/1`);
@@ -54,7 +55,7 @@ describe('CoursesService', () => {
 
     service.loadById('1').subscribe(course => {
       expect(course).toBeTruthy();
-      expect(course._id).toBe('1');
+      expect(course!._id).toBe('1');
     });
 
     httpTestingController.expectNone(`${API}/1`);
@@ -66,7 +67,7 @@ describe('CoursesService', () => {
 
     service.loadById('2').subscribe(course => {
       expect(course).toBeTruthy();
-      expect(course._id).toBe('2');
+      expect(course!._id).toBe('2');
     });
 
     const req = httpTestingController.expectOne(`${API}/2`);

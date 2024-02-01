@@ -1,0 +1,27 @@
+<mat-drawer-container autosize class="example-caontainer">
+  <mat-drawer #drawer mode="side" opened="true" class="example-sidenav">
+    <div>
+      <h3>{{ course.name }}</h3>
+    </div>
+
+    <mat-nav-lister dense *ngIf="course.lessons">
+      <ng-template ngFor let-lesson [ngForOf]="course.lessons">
+        <mat-list-item
+          class="list-with-border"
+          (click)="display(lesson)"
+          [activated]="displaySelectedLesson(lesson)">
+          <span mat-line>
+            {{ lesson.name }}
+          </span>
+        </mat-list-item>
+      </ng-template>
+    </mat-nav-lister>
+  </mat-drawer>
+
+  <div class="example-sidenav-content" #youTubePlayer>
+    <youtube-player
+      [width]="videoWidth"
+      [height]="videoHight"
+      [videoId]="selectedLesson.youtubeUrl"></youtube-player>
+  </div>
+</mat-drawer-container>

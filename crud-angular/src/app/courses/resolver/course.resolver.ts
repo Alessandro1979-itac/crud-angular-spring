@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -8,10 +9,13 @@ import { CoursesService } from '../services/courses.service';
 @Injectable({
   providedIn: 'root'
 })
-export class CourseResolver  {
+export class CourseResolver {
   constructor(private service: CoursesService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Course> {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
+  ): Observable<Course> {
     if (route.params && route.params['id']) {
       return this.service.loadById(route.params['id']);
     }

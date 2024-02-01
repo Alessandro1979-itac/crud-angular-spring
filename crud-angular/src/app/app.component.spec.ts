@@ -1,14 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatToolbarModule],
-      declarations: [AppComponent]
+      imports: [RouterTestingModule, MatToolbarModule, AppComponent]
     }).compileComponents();
   });
 
@@ -22,7 +21,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('CRUD Angular');
+    expect(compiled.querySelector('h1').textContent).toContain('Courses App');
   });
 
   it('should render toolbar', () => {
